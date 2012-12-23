@@ -1,0 +1,232 @@
+body { 
+    background: url('../images/bg.png'); 
+    background-size: 100% 200px; 
+    background-position: 0 40px; 
+    margin: 0;
+    margin-top: 50px;
+}
+
+#head {
+    background: url("../images/titlebg.jpg");
+    border-bottom: 1px solid rgba(a,9,7,.6);
+    box-shadow: 0 0px 20px 10px rgba(0,0,0,.3);
+    width: 100%;
+    height: 50px;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+}
+
+#head .button {
+    background: rgba(5,4,2,.1);
+    color: #fff;
+    cursor: default;
+    font-size: 1.2em;
+    font-weight: bold;
+    border: 1px solid #764;
+    border-radius: 5px;
+    padding: 3px;
+}
+#head .button:hover {
+    background: rgba(5,4,2,.2);
+}
+
+#head .add {
+    float: left;
+    padding-left: 5px;
+    padding-right: 5px;
+    width: 17px;
+    margin: 10px;
+}
+#head .switch {
+    width: 81px;
+    height: 30px;
+    float: left;
+    margin: 10px;
+}
+.list #head .switch {
+    background: url("../images/displaySwitcher2.jpg");
+}
+.tiled #head .switch {
+    background: url("../images/displaySwitcher.jpg");
+}
+#head #search {
+    background: url("../images/search.png") white no-repeat;
+    background-position: 5px 3px;
+    border: 1px solid #aa7;
+    border-radius: 10px;
+    display: block;
+    float: right;
+    margin: 10px;
+    margin-left: -40px;
+    margin-right: 20px;
+    outline: none;
+    padding: 2px;
+    padding-left: 25px;
+    width: 200ps;
+}
+
+#head .title {
+    color: #653;
+    cursor: default;
+    text-align: center;
+    margin: 10px;
+    font-size: 1.4em;
+    font-weight: bold;
+}
+
+#shelf.tiled {
+    padding-left: 15px;
+    padding-right: 15px;
+    text-align: center;
+}
+
+#shelf.tiled .book {
+    background-color: #e1d7c3;
+    border: 1px solid #555;
+    border-left: 10px double #caa;
+    border-radius: 4px 2px 2px 4px;
+    box-shadow: 0 2px 2px 3px rgba(0, 0, 0, .2);
+    display: inline-block;
+    font-weight: bold;
+    width: 100px;
+    height: 150px;
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 38px;
+    margin-left: 40px;
+    margin-right: 40px;
+    cursor: pointer;
+    position: relative;
+    vertical-align: bottom;
+}
+
+#shelf.tiled .book .editBook { display: none; }
+
+#shelf.tiled .book .title {
+    font-family: serif;
+    display: inline-block;
+    background-color: #eed;
+    border: 6px double #f9d7c3;
+    font-size: 8pt;
+    margin: 4px;
+    margin-top: 14px;
+    padding: 2px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    top: 0;
+}
+
+#shelf.tiled .book .author {
+    font-family: sans;
+    font-size: 7.5pt;
+    position: absolute;
+    width: 80px;
+    padding: 10px;
+    bottom: 0;
+}
+
+#shelf.list {
+    background: white;
+    min-height: 100%;
+}
+
+#shelf.list .book {
+    border-bottom: 1px solid #666;
+    padding: 15px;
+    padding-left: 80px;
+}
+
+#shelf.list .book.read {
+    border-left: 10px solid #0d0;
+}
+
+#shelf.list .book.unread {
+    border-left: 10px solid #f00;
+}
+#shelf.list .book .editBook {
+    background: #eee;
+    cursor: pointer;
+    font-size: .8em;
+    font-weight: bold;
+    float: right;
+    margin: 5px;
+    border: 1px solid #aab;
+    border-radius: 5px;
+    padding: 5px;
+}
+#shelf.list .book .editBook:hover {
+    background: #fff;
+}
+#shelf.list .book .title {
+    font-weight: bold;
+}
+
+#shelf.list .book .author {
+    font-style: italic;
+}
+
+#lightbox {
+    display: none;
+}
+
+#lightbox .bg {
+    background: rgba(0, 0, 0, .7);
+    background: -webkit-radial-gradient(circle, rgba(155, 155, 155, .7), rgba(0, 0, 0, .7));
+    z-index: 1000;
+    position: fixed;
+    height: 100%;
+    width: 100%;
+    left: 0;
+    top: 0;
+}
+
+#lightbox .updateBook {
+    background-color: #e1d7c3;
+    border: 1px solid #555;
+    border-left: 10px double #caa;
+    border-radius: 4px 2px 2px 4px;
+    box-shadow: 0 2px 2px 3px rgba(0, 0, 0, .2);
+
+    position: fixed;
+    width: 300px;
+    height: 400px;
+    z-index: 1200;
+    top: 100px;
+    left: 50%;
+    margin-left: -150px;
+}
+
+#lightbox .updateBook .title {
+    background-color: #eed;
+    border: 6px double #f9d7c3;
+    outline: none;
+    position: absolute;
+    font-family: serif;
+    font-size: 1.2em;
+    font-weight: bold;
+    top: 20px;
+    left: -8px;
+    margin: 30px;
+    width: 240px;
+    text-align: center;
+    scroll: none;
+    overflow: auto;
+}
+
+#lightbox .updateBook .author {
+    background: none;
+    border: none;
+    font-family: sans;
+    font-weight: bold;
+    outline: none;
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    margin: 30px;
+    overflow: auto;
+    width: 240px;
+    text-align: center;
+}
+
