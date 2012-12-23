@@ -15,14 +15,16 @@ var Book = Backbone.Model.extend({
 
 var BookList = Backbone.Collection.extend({
     model: Book,
-    localStorage: new Backbone.LocalStorage("thisapp"),
+    localStorage: new Backbone.LocalStorage("shelfari"),
     read: function() {
 	return this.filter(function(book) { return book.get("read"); });
     },
     unread: function() {
 	return this.filter(function(book) { return !book.get("read"); });
     },
-    comparator: "title",
+    comparator: function(book) {
+	return book.get("title").toLowerCase().replace( /(^the\s|^a\s|^an\s)/ , "");
+    }
 });
 
 var Books = new BookList, currBooks = Books;
@@ -71,6 +73,7 @@ var ShelfView = Backbone.View.extend({
     view: "tiled",
     statsTemplate: _.template('Hellow <%= title %>'),
     s_timer: undefined, // search debounce timer
+    add_timer: undefined,
     
     events: {
 	"keydown #search": "search",
@@ -79,10 +82,14 @@ var ShelfView = Backbone.View.extend({
     },
 
     initialize: function() {
+	this.listenTo(Books, "add", this.addOne);
 	this.listenTo(Books, "change", this.render);
 	this.listenTo(Books, "destroy", this.render);
+	
+	Books.fetch();
     },
     render: function() {
+	console.log("render");
 	Shelf.$el.children("#books").html("");
 	
 	currBooks.each(function(book) {
@@ -128,7 +135,11 @@ var ShelfView = Backbone.View.extend({
     },
     newBook: function() {
 	App.render();
-
+    },
+    addOne: function() {
+	var x=5;
+	clearTimeout(this.add_timer);
+	this.add_timer = setTimeout(this.render, 100);
     }
 });
 
@@ -139,14 +150,11 @@ var AppView = Backbone.View.extend({
 	"click .bg": "close"
     },
     render: function(model) {
-	console.log(this.$el.children(".updateBook")[0]);
-	if(typeof(model) != 'undefined') {
+	if(typeof(model) != 'undefined')
 	    this.$el.children(".updateBook").html(this.up_template({ title: model.get("title"), author: model.get("author") }));
-	}
-	else {
-	    this.$el.children(".updateBook").children(".title").html("Title");
-	    this.$el.children(".updateBook").children(".author").html("Author");
-	}
+	else 
+	    this.$el.children(".updateBook").html(this.up_template({ title: "Title", author: "Author" }));
+
 	this.$el.children(".bg").css({
 	    opacity: .4
 	}).animate({
@@ -172,7 +180,7 @@ var AppView = Backbone.View.extend({
 	setTimeout(function() {	
 	    that.$el.hide();
     
-	}, 100);
+	}, 200);
     }
 });
 

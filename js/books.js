@@ -35,6 +35,11 @@ var _stockBooks = [
 	read: false
     },
     {
+	title: "The Da Vinci Code",
+	author: "Dan Brown",
+	read: false
+    },
+    {
 	title: "Tell Me Your Dreams",
 	author: "Sidney Sheldon",
 	read: false
