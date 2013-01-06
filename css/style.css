@@ -230,3 +230,47 @@ body {
     text-align: center;
 }
 
+#lightbox .menu {
+    background: url("../images/titlebg.jpg");
+    border-radius: 8px 8px 0 0;
+    position: absolute;
+    height: 25px; 
+    width: 304px; 
+    margin-left: -10px;
+    margin-top: -35px; 
+    padding: 3px;
+    text-align: center;
+}
+
+#lightbox .button {
+    border: 1px solid #dab;
+    border-radius: 6px;
+    box-shadow: inset 0 4px 10px 1px #fff;
+    color: white;
+    cursor: pointer;
+    font-size: .7em;
+    font-weight: bold;
+    padding: 5px;
+    margin: 4px;
+    margin-top: 1px;
+}
+#lightbox .button:hover {
+    box-shadow: inset 0 3px 10px 1px #fff;
+}
+#lightbox .done {
+    background-color: #191;
+    float: right;
+}
+#lightbox .delete,.cancel {
+    background-color: #d00;
+    float: left;
+}
+
+#lightbox .action {
+    cursor: default;
+    display: inline-block;
+    font-weight: bold;
+    font-size: 1.1em;
+    padding-top: 3px;
+    padding-right: 10px;
+}

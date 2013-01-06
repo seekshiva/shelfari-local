@@ -12,7 +12,7 @@ var Book = Backbone.Model.extend({
     }
 });
 
-
+var _gg;
 var BookList = Backbone.Collection.extend({
     model: Book,
     localStorage: new Backbone.LocalStorage("shelfari"),
@@ -23,6 +23,7 @@ var BookList = Backbone.Collection.extend({
 	return this.filter(function(book) { return !book.get("read"); });
     },
     comparator: function(book) {
+	_gg = book;
 	return book.get("title").toLowerCase().replace( /(^the\s|^a\s|^an\s)/ , "");
     }
 });
@@ -96,6 +97,15 @@ var ShelfView = Backbone.View.extend({
 	    var bookview = new BookView({model: book});
 	    Shelf.$el.children("#books").append(bookview.render().el);
 	});
+	
+	if(currBooks.length == 0) {
+	    if(confirm("There was no book found in your local machine. Would you like to fill your shelf with some stock books?")) {
+		var i;
+		//Books.add(_stockBooks);
+		for(i=0;i<_stockBooks.length;++i)
+		    Books.create(_stockBooks[i]);
+	    }
+	}
 	return this;
     },
     search: function() {
@@ -145,15 +155,23 @@ var ShelfView = Backbone.View.extend({
 
 var AppView = Backbone.View.extend({
     el: "#lightbox",
-    up_template: _.template('<textarea class="title" rows="3"><%= title %></textarea>\n<textarea class="author" rows="2"><%= author %></textarea>'),
+    currBook: undefined,
+    up_template: _.template('<div class="menu"><div class="<%= action=="Add"?"cancel":"delete" %> button"><%= action=="Add"?"Cancel":"Delete" %></div><div class="done button">Done</div><div class="action"><%= action %></div></div><textarea class="title" rows="3"><%= title %></textarea>\n<textarea class="author" rows="2"><%= author %></textarea>'),
     events: {
-	"click .bg": "close"
+	"click .bg": "close",
+	"click .cancel": "close",
+	"click .delete": "delete",
+	"click .done": "done"
     },
     render: function(model) {
-	if(typeof(model) != 'undefined')
-	    this.$el.children(".updateBook").html(this.up_template({ title: model.get("title"), author: model.get("author") }));
-	else 
-	    this.$el.children(".updateBook").html(this.up_template({ title: "Title", author: "Author" }));
+	if(typeof(model) != 'undefined') {
+	    this.$el.children(".updateBook").html(this.up_template({ action: "Edit", title: model.get("title"), author: model.get("author") }));
+	    this.currBook = model;
+	}
+	else {
+	    this.$el.children(".updateBook").html(this.up_template({ action: "Add", title: "Title", author: "Author" }));
+	    this.currBook = undefined;
+	}
 
 	this.$el.children(".bg").css({
 	    opacity: .4
@@ -181,18 +199,31 @@ var AppView = Backbone.View.extend({
 	    that.$el.hide();
     
 	}, 200);
+    },
+    delete: function(book) {
+	this.currBook.destroy();
+	this.close();
+    },
+    done: function() {
+	if(typeof(this.currBook) != "undefined") {
+	    this.currBook.save({
+		title: this.$el.children(".updateBook").children(".title").val(),
+		author: this.$el.children(".updateBook").children(".author").val()
+	    });
+	}
+	else {
+	    Books.create({
+		title: this.$el.children(".updateBook").children(".title").val(),
+		author: this.$el.children(".updateBook").children(".author").val()
+	    });
+	}
+	this.close();
     }
 });
 
 var Shelf = new ShelfView(),
 App = new AppView();
 
-Books.add(_stockBooks);
-Books.add([
-    {title: "the new book"},
-    {title: "the old book"},
-    {title: "the other book"}
-]);
 
 Shelf.render();
 
